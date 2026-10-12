@@ -6,7 +6,7 @@
 from pathlib import Path
 import os
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Header , Static , Button
+from textual.widgets import Footer, Header  , Button , Switch , Static
 from textual.containers import HorizontalGroup , VerticalGroup
 from textual.app import RenderResult
 from textual.reactive import reactive
@@ -16,9 +16,16 @@ def get_items_in_folder(current_path : str , get_hidden = False) -> dict:
     
     items = {}
     for i , file in enumerate(os.listdir(path=current_path)):
-            if not get_hidden:
-                if file.startswith(".") == False:
-                    items[i] = file
+                if file.startswith(".") == True:
+                     if get_hidden == False : 
+                          continue
+                     elif get_hidden == True:
+                          items[i] = file
+                else:
+                     items[i] = file
+            
+
+            
     return items
 
 class Folder(Button):
@@ -35,41 +42,69 @@ class Folder(Button):
           self.itemName = itemName
           self.label = itemName
 
+
 class FolderContainer(HorizontalGroup):
 
     current_dir = reactive(str(Path.cwd()) , recompose=True)
+    get_hidden = reactive(False , recompose=True)
     items_in_folder = {}
 
     def compose(self)-> ComposeResult:
-         self.items_in_folder = get_items_in_folder(self.current_dir)
-         yield Button(".." , variant="primary" , id="back-btn")
+         
+        # on compose , create dict for all items in the current directory 
+         self.items_in_folder = get_items_in_folder(self.current_dir , self.get_hidden)
+
+        # Static back button to always go up a level 
+         yield Button(".." , variant="primary" , id="back-btn" , name="back-btn")
+
          # item is index to get the actual value in the hashmap. Think of it as a ticket that gets claimed when we yield static 
          for item in self.items_in_folder.keys():
-              yield Folder(itemName = self.items_in_folder[item] )
+              yield Folder(itemName = self.items_in_folder[item]  , name="folder")
 
+
+    def on_switch_changed( self , event : Switch.Changed):
+
+        if event.value == True:
+             self.get_hidden = True
+        else:
+             self.get_hidden = False
+             
 
     def on_button_pressed(self , event :  Folder.Pressed):
-        print("This works")
         #update path and dict with items in the new folder
-        if event.button.id == "back-btn":
-            self.current_dir = str(Path(self.current_dir).parent)
-            print(self.current_dir)
-        else:
-            pathToAppend = event.button.itemName
-            self.current_dir = str(Path(self.current_dir) / pathToAppend)
-            print("I got to folders btn")
-        
-      
-              
-              
+        if event.button.name == "back-btn":
+            self.goUpDir()
+        elif event.button.name == "folder":
+            self.goIntoDir(event.button.itemName)
 
+
+    # functions to go up and down the file tree to keep button press 
+    # logic readable self.current_dir = str(Path(self.current_dir).parent)
+    def goUpDir(self) -> None:
+         self.current_dir = str(Path(self.current_dir).parent)
+              
+    def goIntoDir(self , itemName : str) -> None:
+            self.current_dir = str(Path(self.current_dir) / itemName)
 
 class ITSS(App):
 
     CSS_PATH = "app.tcss"
     # main application , will mainly be for calling different widgets and just running the app 
     def compose(self) -> ComposeResult:
+         yield Header()
          yield FolderContainer()
+         yield Button( "Quit", id="quit" , variant="error")
+         yield Static("Show Hidden:")
+         yield Switch( value=False)
+
+    def on_button_pressed( self , event :  Button.Pressed):
+
+         if event.button.id == "quit":
+              quit()
+
+    def on_switch_changed(self , event : Switch.Changed):
+
+         self.query_exactly_one(FolderContainer).get_hidden = event.value
         
        
        
