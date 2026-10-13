@@ -1,0 +1,16 @@
+HiddenToggle , FolderContainer{
+    border:dashed;
+    
+}
+
+Static{
+width:10%;
+
+}
+
+HiddenToggle{
+    position:relative;
+    height:40%
+}
+
+
