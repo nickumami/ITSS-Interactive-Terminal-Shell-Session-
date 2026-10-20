@@ -1,13 +1,14 @@
-# #activate command : source .venv/bin/activate 
-# #run command for debugging 
+# #activate command : source .venv/bin/activate
+# #run command for debugging
 # #textual run --dev /home/nickumami/Work/ITSS/itss.py(personal terminal) , textual console(debug terminal)
 # activate for windows : source .venv/Scripts/activate
 
 #personal module import
 from folder_widget import folder_widget
 from toggle_widget import toggle_widget
+from uni_nav_widget import uni_nav_wiget
 
-#imports needed to run main 
+#imports needed to run main
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header  , Button , Switch , Static
 from textual.containers import HorizontalGroup , VerticalGroup
@@ -17,11 +18,12 @@ from textual.reactive import reactive
 class ITSS(App):
 
     CSS_PATH = "app.tcss"
-    # main application , will mainly be for calling different widgets and just running the app 
+    # main application , will mainly be for calling different widgets and just running the app
     def compose(self) -> ComposeResult:
          yield Header()
          yield toggle_widget.HiddenToggle(id="toggle-switch")
-         yield folder_widget.FolderContainer()
+         yield folder_widget.FolderContainer(id="folder-container")
+         yield uni_nav_wiget.UniFileNavigation()
          yield Button( "Quit", id="quit" , variant="error")
 
     def on_button_pressed( self , event :  Button.Pressed):
@@ -31,8 +33,8 @@ class ITSS(App):
 
     def on_switch_changed(self , event : Switch.Changed):
          self.query_exactly_one(folder_widget.FolderContainer).get_hidden = event.value
-        
-    
+
+
 #actual main function running the code
 if __name__ == "__main__":
     # main()
