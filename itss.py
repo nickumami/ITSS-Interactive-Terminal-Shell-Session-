@@ -23,7 +23,7 @@ class ITSS(App):
          yield Header()
          yield toggle_widget.HiddenToggle(id="toggle-switch")
          yield folder_widget.FolderContainer(id="folder-container")
-         yield uni_nav_wiget.UniFileNavigation()
+         #yield uni_nav_wiget.UniFileNavigation()
          yield Button( "Quit", id="quit" , variant="error")
 
     def on_button_pressed( self , event :  Button.Pressed):
