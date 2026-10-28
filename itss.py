@@ -6,7 +6,7 @@
 #personal module import
 from folder_widget import folder_widget
 from toggle_widget import toggle_widget
-from uni_nav_widget import uni_nav_wiget
+#from uni_nav_widget import uni_nav_wiget
 
 #imports needed to run main
 from textual.app import App, ComposeResult
