@@ -8,9 +8,25 @@ width:10%;
 
 }
 
+/* FOLDER SECTION (MAIN BODY) */
 HiddenToggle{
     position:relative;
-    height:40%
+    height:40%;
+    border:dashed;
 }
 
+FolderHQ { 
+   dock:left;
+   width:20; 
+}
+
+AtTheCrimeScene{
+    padding-left:2;
+    border:dashed;
+    min-height:20;
+    
+}
+FolderContainer{
+    margin-left:1;
+}
 

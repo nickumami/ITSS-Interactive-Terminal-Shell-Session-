@@ -82,6 +82,7 @@ class AtTheCrimeScene(HorizontalGroup):
 
 class FolderContainer(HorizontalGroup):
 
+    CSS_PATH = 'folder.tcss'
     current_dir = reactive(str(Path.cwd()) , recompose=True)
     get_hidden = reactive(False , recompose=True)
 
