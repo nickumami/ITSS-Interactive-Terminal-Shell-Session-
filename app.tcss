@@ -1,6 +1,6 @@
 HiddenToggle , FolderContainer{
     border:dashed;
-    
+
 }
 
 Static{
@@ -9,24 +9,25 @@ width:10%;
 }
 
 /* FOLDER SECTION (MAIN BODY) */
-HiddenToggle{
-    position:relative;
-    height:40%;
-    border:dashed;
-}
-
-FolderHQ { 
+FolderHQ {
    dock:left;
-   width:20; 
+   width:20;
 }
 
-AtTheCrimeScene{
-    padding-left:2;
-    border:dashed;
-    min-height:20;
-    
-}
 FolderContainer{
     margin-left:1;
+
+    height:40;
+}
+#atTheCrimScene{
+    overflow: auto auto;
 }
 
+#atTheCrimeScene > Horizontal {
+    overflow: auto auto;
+}
+
+.folder{
+    height: 50%;
+    border: solid yellow;
+}
